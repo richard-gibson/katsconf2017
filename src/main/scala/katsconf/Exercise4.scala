@@ -1,7 +1,6 @@
 package katsconf
 
 import cats.kernel._
-import cats.implicits._
 
 object Exercise4 {
 
