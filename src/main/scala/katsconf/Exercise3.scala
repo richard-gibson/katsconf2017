@@ -1,12 +1,12 @@
 package katsconf
 
-import scala.language.higherKinds
-import scala.io.StdIn
-
 import cats._
 import cats.arrow.FunctionK
 import cats.data.State
 import cats.free._
+
+import scala.io.StdIn
+import scala.language.higherKinds
 
 object Exercise3 extends App {
 
@@ -61,13 +61,24 @@ object Exercise3 extends App {
     _ <- Terminal.writeLine(s"::: $r2 :::")
   } yield s"$r1 $r2"
 
+  val program2: Free[Terminal, String] = for {
+    r1 <- Terminal.readLine
+    r2 <- Terminal.readLine
+    _ <- Terminal.writeLine(s"--- $r1 :::")
+    _ <- Terminal.writeLine(s"--- $r2 :::")
+  } yield s"$r1 $r2"
+
+  val program3: Free[Terminal, String] = for {
+    p1 <- program
+    p2 <- program2
+  } yield s"$p1 :::::: $p2"
+
   val mockState = Mock(in = List("hello ", "world"), out = List.empty)
   val runTermToState: (Mock, String) =
-    Terminal.run(program)(terminalToState)
-    .run(mockState).value
+    Terminal.run(program)(terminalToState).run(mockState).value
   println(s"processed Mock state ${runTermToState._1}")
   val runTermToEval: Eval[String] =
-    Terminal.run(program)(terminalToEval)
+    Terminal.run(program3)(terminalToEval)
 
   println(s"program output ${runTermToEval.value}")
 

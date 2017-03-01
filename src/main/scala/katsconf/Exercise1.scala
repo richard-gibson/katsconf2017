@@ -2,18 +2,13 @@ package katsconf
 
 import cats.data._
 import cats.implicits._
-import cats.syntax.CartesianBuilder
 
 object Exercise1 {
 
-  sealed trait Failure
-  case class EmptyString(fieldName:String) extends Failure
-  case class InvalidCity(city:String) extends Failure
-  case class ValueOutOfRange(i:Int) extends Failure
-  final val zip = List("00111", "001122", "000333")
-  final val cities = List("Dublin", "London", "Madrid")
 
-  case class Employee private[Exercise1](name: String, zipCode: String, city: String, salary: Int)
+
+
+
 
   // Task 1: You are given raw employee data. If there's an error, give it back.
   // You'll need to add cases to the `Failure` trait.
